@@ -125,11 +125,11 @@ class Analyzer:
         prev_branch_block: BasicBlock | None = None
 
         # block completion flag (introduced for SPARC pipeline)
-        block_completion: int = 0
+        block_completion: int | None = 0
 
         for instruction in self.instructions:
             # if block completion is in progress
-            if block_completion > 0:
+            if block_completion is not None and block_completion > 0:
                 block_completion -= 1
                 if block_completion > 0:
                     self.basic_blocks[curr_basic_block.key].add_instruction(instruction)

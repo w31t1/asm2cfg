@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # SPDX-License-Identifier: GTDGmbH
 # Copyright 2024 by GTD GmbH.
 """Class configuring the OCGraph logging."""

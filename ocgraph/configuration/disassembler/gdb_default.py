@@ -214,4 +214,5 @@ class GdbDisassembler(Disassembler):
         )
 
     def parse_jump_target(self, str_input: str) -> int | None:
-        return int(re.search(rf"{HEX_LONG_PATTERN}", str_input)[0], 16)
+        # TODO: Fix str_input indexing because it's a list.
+        return int(re.search(rf"{HEX_LONG_PATTERN}", str_input[0])[0], 16)

@@ -64,9 +64,7 @@ def main():
     args = parser.parse_args()
 
     # Create configuration
-    config = OcGraphConfiguration(
-        disassembler=args.diss, arch=args.arch, logging_preset=args.logger
-    )
+    config = OcGraphConfiguration(disassembler=args.diss, arch=args.arch, preset=args.logger)
 
     lines = read_lines(args.file)
 

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GTDGmbH
 """Module for configuration of the ocgraph package."""
 
-from .logger import OcctreLogger, preset_logging
+from .logger import OCGraphLogger, logging_preset
 
 from .architecture.architecture import Architecture
 from .architecture.x86 import X86Architecture
@@ -51,21 +51,25 @@ architecture_option: dict[str, dict] = {
         "architecture": PpcArchitecture(),
     },
 }
-
 # fmt: on
 
 
 class OcGraphConfiguration:
     """Implement configuration presets for the ASM2CFG tool."""
 
-    def __init__(
-        self, arch: str = "sparc", disassembler: str = "OBJDUMP", logging_preset="default"
-    ):
+    logger: OCGraphLogger
+    """Logging mechanism for module"""
+    architecture: Architecture
+    """Target architecture instance"""
+    disassembler: Disassembler
+    """Target disassembler tool like OBJDump, GDB, ..."""
+
+    def __init__(self, arch: str = "sparc", disassembler: str = "OBJDUMP", preset="default"):
         if architecture_option.get(arch) is None:
             raise NotImplementedError("Architecture option not supported!")
         if disassembler_option.get(disassembler) is None:
             raise NotImplementedError("Disassembler option not supported!")
-        if preset_logging.get(logging_preset) is None:
+        if logging_preset.get(preset) is None:
             raise NotImplementedError("Logging preset not supported!")
 
         # load module preset
@@ -74,7 +78,7 @@ class OcGraphConfiguration:
         self.__dict__ = _preset
 
         # configure logging
-        self.logger = OCGraphLogger("OcGraph", logging_preset, "asm2cfg.log")
+        self.logger = OCGraphLogger("OcGraph", preset, "asm2cfg.log")
 
     @staticmethod
     def architectures():
@@ -89,13 +93,4 @@ class OcGraphConfiguration:
     @staticmethod
     def loggers():
         """Return all available disassemblers options"""
-        return preset_logging.keys()
-
-    logger: logging.Logger = logging.Logger("OcGraph")
-    """Logging mechanism for module"""
-
-    architecture: Architecture
-    """Target architecture instance"""
-
-    disassembler: Disassembler
-    """Target disassembler tool like OBJDump, GDB, ..."""
+        return logging_preset.keys()
